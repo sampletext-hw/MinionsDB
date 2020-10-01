@@ -128,9 +128,141 @@ namespace MyDbTasks
             }
         }
 
+        private static bool IsVillainExist(string name)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                string selectionCommandString = "SELECT COUNT(*) FROM Villains " +
+                                                "WHERE Name=@name";
+                SqlCommand command = new SqlCommand(selectionCommandString, connection);
+                command.Parameters.AddWithValue("@name", name);
+                var result = (int)command.ExecuteScalar();
+                return result > 0;
+            }
+        }
+
+        private static bool IsTownExist(string name)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                string selectionCommandString = "SELECT COUNT(*) FROM Towns " +
+                                                "WHERE Name=@name";
+                SqlCommand command = new SqlCommand(selectionCommandString, connection);
+                command.Parameters.AddWithValue("@name", name);
+                var result = (int)command.ExecuteScalar();
+                return result > 0;
+            }
+        }
+
+        private static int InsertTown(string name)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO Towns " +
+                    "(Name, CountryCode) VALUES " +
+                    "(@name, 2); SELECT SCOPE_IDENTITY()", connection);
+
+                command.Parameters.AddWithValue("@name", name);
+
+                var result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+            }
+        }
+
+        private static int InsertVillain(string name)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO Villains " +
+                    "(Name, EvilnessFactorId) VALUES " +
+                    "(@name, 2); SELECT SCOPE_IDENTITY()", connection);
+
+                command.Parameters.AddWithValue("@name", name);
+
+                var result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+            }
+        }
+
+        private static int InsertMinion(string name, int age, int townId)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO Minions " +
+                    "(Name, Age, TownId) VALUES " +
+                    "(@name, @age, @townId); SELECT SCOPE_IDENTITY()", connection);
+
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@age", age);
+                command.Parameters.AddWithValue("@townId", townId);
+
+                var result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+            }
+        }
+
+        private static void InsertVillainsMinion(int minionId, int villainId)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO MinionsVillains " +
+                    "(MinionId, VillainId) VALUES " +
+                    "(@minionId, @villainId); SELECT SCOPE_IDENTITY()", connection);
+
+                command.Parameters.AddWithValue("@minionId", minionId);
+                command.Parameters.AddWithValue("@villainId", villainId);
+            }
+        }
+
+        static void Task3()
+        {
+            string[] minionData = Console.ReadLine().Split(' ');
+            string[] villainData = Console.ReadLine().Split(' ');
+            string minionName = minionData[1];
+            int minionAge = int.Parse(minionData[2]);
+            string minionTown = minionData[3];
+            int minionTownId = -1;
+
+            if (!IsTownExist(minionTown))
+            {
+                minionTownId = InsertTown(minionTown);
+                Console.WriteLine($"Город {minionTown} был добавлен в БД, id={minionTownId}");
+            }
+
+            string villainName = villainData[1];
+            int villainId = -1;
+
+            if (!IsVillainExist(villainName))
+            {
+                villainId = InsertVillain(villainName);
+                Console.WriteLine($"Злодей {villainName} был добавлен в БД, id={villainId}");
+            }
+
+            var minionId = InsertMinion(minionName, minionAge, minionTownId);
+            InsertVillainsMinion(minionId, villainId);
+
+            Console.WriteLine($"Успешно добавлен {minionName}, чтобы быть миньоном {villainName}");
+        }
+
         static void Main(string[] args)
         {
-            Task2();
+            Task3();
         }
     }
 }
