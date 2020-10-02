@@ -8,7 +8,7 @@ namespace MyDbTasks
     {
         static string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Minions;Trusted_Connection=True";
 
-        static void Task1()
+        static void Task2()
         {
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -83,7 +83,7 @@ namespace MyDbTasks
             }
         }
 
-        static void Task2()
+        static void Task3()
         {
             Console.Write("Enter VillainId: ");
             int id = Int32.Parse(Console.ReadLine());
@@ -230,7 +230,7 @@ namespace MyDbTasks
             }
         }
 
-        static void Task3()
+        static void Task4()
         {
             string[] minionData = Console.ReadLine().Split(' ');
             string[] villainData = Console.ReadLine().Split(' ');
