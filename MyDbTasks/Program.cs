@@ -260,9 +260,58 @@ namespace MyDbTasks
             Console.WriteLine($"Успешно добавлен {minionName}, чтобы быть миньоном {villainName}");
         }
 
+        private static int DeleteMinionsVillainsByVillainId(int villainId)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand(
+                    "DELETE FROM MinionsVillains " +
+                    "WHERE VillainId = @villainId", connection);
+
+                command.Parameters.AddWithValue("@villainId", villainId);
+                return command.ExecuteNonQuery();
+            }
+        }
+
+        private static int DeleteVillainById(int id)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand(
+                    "DELETE FROM Villains " +
+                    "WHERE Id = @id", connection);
+
+                command.Parameters.AddWithValue("@id", id);
+                return command.ExecuteNonQuery();
+            }
+        }
+        
+        static void Task5()
+        {
+            int villainId = int.Parse(Console.ReadLine());
+
+            if (!IsVillainExist(villainId))
+            {
+                Console.WriteLine("Такой злодей не найден.");
+                return;
+            }
+
+            var villainName = GetVillainName(villainId);
+
+            var minionsCount = DeleteMinionsVillainsByVillainId(villainId);
+
+            DeleteVillainById(villainId);
+
+            Console.WriteLine($"{villainName} был удалён.\n{minionsCount} миньонов было освобождено.");
+        }
+
         static void Main(string[] args)
         {
-            Task3();
+            Task5();
         }
     }
 }
