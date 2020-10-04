@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
-using System.Data;
+using System.Linq;
 
 namespace MyDbTasks
 {
@@ -289,7 +289,7 @@ namespace MyDbTasks
                 return command.ExecuteNonQuery();
             }
         }
-        
+
         static void Task5()
         {
             int villainId = int.Parse(Console.ReadLine());
@@ -309,9 +309,49 @@ namespace MyDbTasks
             Console.WriteLine($"{villainName} был удалён.\n{minionsCount} миньонов было освобождено.");
         }
 
+        private static int IncrementMinionsAge(int[] ids)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand(
+                    $"UPDATE Minions SET Age=Age+1 WHERE Id IN ({string.Join(", ", ids)})", connection);
+
+                return command.ExecuteNonQuery();
+            }
+        }
+
+        static void Task6()
+        {
+            var minionsIds = Console.ReadLine().Split(' ').Select(int.Parse);
+            var updated = IncrementMinionsAge(minionsIds.ToArray());
+
+            Console.WriteLine($"{updated} строк обновлено.");
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                string selectionCommandString =
+                    "SELECT Minions.Name as MinionName, Minions.Age as MinionAge " +
+                    "FROM Minions";
+                SqlCommand command = new SqlCommand(selectionCommandString, connection);
+                SqlDataReader reader = command.ExecuteReader();
+                int count = 1;
+                using (reader)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine($"{count++}. {reader["MinionName"]} {reader["MinionAge"]}");
+                    }
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
-            Task5();
+            Task6();
         }
     }
 }
