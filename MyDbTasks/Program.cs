@@ -68,6 +68,21 @@ namespace MyDbTasks
             }
         }
 
+        private static int GetTownId(string name)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            using (connection)
+            {
+                string selectionCommandString = "SELECT Name FROM Towns " +
+                                                "WHERE Name=@name";
+                SqlCommand command = new SqlCommand(selectionCommandString, connection);
+                command.Parameters.AddWithValue("@name", name);
+                var result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+            }
+        }
+
         private static bool IsVillainHasMinions(int id)
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -237,12 +252,16 @@ namespace MyDbTasks
             string minionName = minionData[1];
             int minionAge = int.Parse(minionData[2]);
             string minionTown = minionData[3];
-            int minionTownId = -1;
+            int minionTownId;
 
             if (!IsTownExist(minionTown))
             {
                 minionTownId = InsertTown(minionTown);
                 Console.WriteLine($"Город {minionTown} был добавлен в БД, id={minionTownId}");
+            }
+            else
+            {
+                minionTownId = GetTownId(minionTown);
             }
 
             string villainName = villainData[1];
