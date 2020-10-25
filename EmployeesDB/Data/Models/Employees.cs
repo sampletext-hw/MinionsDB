@@ -29,5 +29,29 @@ namespace EmployeesDB.Data.Models
         public virtual ICollection<Departments> Departments { get; set; }
         public virtual ICollection<EmployeesProjects> EmployeesProjects { get; set; }
         public virtual ICollection<Employees> InverseManager { get; set; }
+
+        public override string ToString()
+        {
+            return
+                $"Employees:\n" +
+                $"{{\n" +
+                $"\t{nameof(EmployeeId)}: {EmployeeId},\n" +
+                $"\t{nameof(FirstName)}: {FirstName},\n" +
+                $"\t{nameof(LastName)}: {LastName},\n" +
+                $"\t{nameof(MiddleName)}: {MiddleName},\n" +
+                $"\t{nameof(JobTitle)}: {JobTitle},\n" +
+                $"\t{nameof(DepartmentId)}: {DepartmentId},\n" +
+                $"\t{nameof(ManagerId)}: {ManagerId},\n" +
+                $"\t{nameof(HireDate)}: {HireDate},\n" +
+                $"\t{nameof(Salary)}: {Salary},\n" +
+                $"\t{nameof(AddressId)}: {AddressId},\n" +
+                $"\t{nameof(Address)}: {Address},\n" +
+                $"\t{nameof(Department)}: {Department},\n" +
+                $"\t{nameof(Manager)}: {Manager},\n" +
+                $"\t{nameof(Departments)}: {Departments},\n" +
+                $"\t{nameof(EmployeesProjects)}: {EmployeesProjects},\n" +
+                $"\t{nameof(InverseManager)}: {InverseManager}\n" +
+                $"}}";
+        }
     }
 }

@@ -6,14 +6,16 @@ namespace EmployeesDB
 {
     class Program
     {
-        private static EmployeesContext _context = new EmployeesContext();
+        public static EmployeesContext Context { get; } = new EmployeesContext();
+
         static void Main(string[] args)
         {
+            Task1();
         }
 
         private static string GetEmployeesInformation()
         {
-            var employees = _context.Employees.OrderBy(e => e.EmployeeId).Select(e => e).ToList();
+            var employees = Context.Employees.OrderBy(e => e.EmployeeId).Select(e => e).ToList();
             return string.Join("\n",
                 employees.Select(t =>
                     $"{t.EmployeeId} - {t.FirstName} - {t.LastName} - {t.MiddleName} - {t.JobTitle}"));
@@ -22,6 +24,11 @@ namespace EmployeesDB
         private static void TestTask3()
         {
             Console.WriteLine(GetEmployeesInformation());
+        }
+
+        private static void Task1()
+        {
+            Console.WriteLine(string.Join("\n", Context.Employees.Where(t => t.Salary > 48000).OrderBy(t => t.LastName).ToList()));
         }
     }
 }
