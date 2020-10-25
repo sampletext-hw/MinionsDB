@@ -9,6 +9,12 @@ namespace Task1
         public Node<T> Head { get; private set; }
         public Node<T> Last { get; private set; }
 
+        public T this[int index]
+        {
+            get => Get(index);
+            set => Set(value, index);
+        }
+
         public void Add(T value)
         {
             Node<T> node = new Node<T>(value);
@@ -128,10 +134,10 @@ namespace Task1
 
         public override string ToString()
         {
-            return $"{{ {nameof(Count)}: {Count}, Items:\n{string.Join("\n", AsEnumerable())}}}";
+            return $"{{ {nameof(Count)}: {Count}, Items:\n{string.Join("\n", GetEnumerator())}}}";
         }
 
-        public IEnumerable<T> AsEnumerable()
+        public IEnumerator<T> GetEnumerator()
         {
             var current = Head;
             while (current != null)
