@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinionsDB", "MinionsDB\Mini
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDbTasks", "MyDbTasks\MyDbTasks.csproj", "{BE444AA9-E6D0-433D-87AF-165F1BB891B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structures", "Structures\Structures.csproj", "{5692B084-680C-429B-9A29-214B13CF6B88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1", "Structures\Task1.csproj", "{5692B084-680C-429B-9A29-214B13CF6B88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
