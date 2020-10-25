@@ -30,5 +30,20 @@ namespace EmployeesDB
         {
             Console.WriteLine(string.Join("\n", Context.Employees.Where(t => t.Salary > 48000).OrderBy(t => t.LastName).ToList()));
         }
+
+        private static void Task2()
+        {
+            var town = new Towns(){Name = "Moscow"};
+            Context.Towns.Add(town);
+            Context.SaveChanges(); //call to get town ID
+
+            var address = new Addresses() {AddressText = "27/1 Lubyanka", Town = town};
+            Context.Addresses.Add(address);
+            Context.SaveChanges(); //call to get address ID
+
+            var browns = Context.Employees.Where(t => t.LastName == "Brown").ToList();
+            browns.ForEach(t=>t.Address = address);
+            Context.SaveChanges(); //call to save addresses
+        }
     }
 }
