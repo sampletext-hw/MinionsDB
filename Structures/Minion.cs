@@ -1,6 +1,8 @@
-﻿namespace Task1
+﻿using System;
+
+namespace Task1
 {
-    public class Minion
+    public class Minion : IComparable<Minion>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,6 +15,11 @@
             Name = name;
             Age = age;
             TownId = townId;
+        }
+
+        public int CompareTo(Minion other)
+        {
+            return this.Id.CompareTo(other.Id);
         }
 
         public override string ToString()

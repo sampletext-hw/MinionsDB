@@ -12,10 +12,9 @@ namespace Task1
             minions.Add(new Minion(2, "Alex", 23, 3));
             minions.Add(new Minion(3, "Charlie", 41, 2));
 
-            foreach (var minion in minions)
-            {
-                Console.WriteLine(minion);
-            }
+            Console.WriteLine(minions[0].CompareTo(minions[1]));
+            Console.WriteLine(minions[1].CompareTo(minions[0]));
+            Console.WriteLine(minions[0].CompareTo(minions[0]));
         }
     }
 }
