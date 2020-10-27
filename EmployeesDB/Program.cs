@@ -105,7 +105,8 @@ namespace EmployeesDB
             }
 
             Console.WriteLine($"{employee.LastName} {employee.FirstName} {employee.MiddleName} - {employee.JobTitle}");
-            foreach (var project in Context.EmployeesProjects.Where(t=>t.EmployeeId == id).Select(t => t.Project).ToList())
+            foreach (var project in Context.EmployeesProjects.Where(t => t.EmployeeId == id).Select(t => t.Project)
+                .ToList())
             {
                 Console.WriteLine("\t{0} - {1:dd.MM.yyyy} - {2}", project.Name, project.StartDate,
                     (project.EndDate.HasValue ? project.EndDate.Value.ToString("dd.MM.yyyy") : "Не завершён"));
@@ -116,6 +117,19 @@ namespace EmployeesDB
         {
             var names = Context.Departments.Where(t => t.Employees.Count < 5).Select(t => t.Name).ToList();
             Console.WriteLine(string.Join("; ", names));
+        }
+
+        private static void Task6()
+        {
+            string d = Console.ReadLine();
+            int percent = int.Parse(Console.ReadLine());
+            var department = Context.Departments.First(t => t.Name == d);
+            foreach (var employee in department.Employees)
+            {
+                employee.Salary *= (decimal)((100 + percent) / 100f);
+            }
+
+            Context.SaveChanges();
         }
     }
 }
