@@ -111,5 +111,11 @@ namespace EmployeesDB
                     (project.EndDate.HasValue ? project.EndDate.Value.ToString("dd.MM.yyyy") : "Не завершён"));
             }
         }
+
+        private static void Task5()
+        {
+            var names = Context.Departments.Where(t => t.Employees.Count < 5).Select(t => t.Name).ToList();
+            Console.WriteLine(string.Join("; ", names));
+        }
     }
 }
