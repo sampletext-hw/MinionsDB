@@ -11,7 +11,7 @@ namespace EmployeesDB
 
         static void Main(string[] args)
         {
-            Task4();
+            Task7();
         }
 
         private static string GetEmployeesInformation()
@@ -129,6 +129,24 @@ namespace EmployeesDB
                 employee.Salary *= (decimal)((100 + percent) / 100f);
             }
 
+            Context.SaveChanges();
+        }
+
+        private static void Task7()
+        {
+            int id = int.Parse(Console.ReadLine());
+            var department = Context.Departments.Where(t=>t.DepartmentId == id).Include(t=>t.Employees).First();
+            if (department == null)
+            {
+                Console.WriteLine("Отдел не найден");
+                return;
+            }
+
+            // THIS IS BROKEN BECAUSE OF DOUBLED FOREIGN KEY
+            department.Employees.Clear();
+            Context.SaveChanges();
+            
+            Context.Departments.Remove(department);
             Context.SaveChanges();
         }
     }
