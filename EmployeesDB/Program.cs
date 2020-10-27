@@ -11,7 +11,7 @@ namespace EmployeesDB
 
         static void Main(string[] args)
         {
-            Task3();
+            Task4();
         }
 
         private static string GetEmployeesInformation()
@@ -80,7 +80,8 @@ namespace EmployeesDB
 
             foreach (var employee in employees)
             {
-                Console.WriteLine($"{employee.FirstName} {employee.LastName} - {employee.Manager.FirstName} {employee.Manager.LastName}");
+                Console.WriteLine(
+                    $"{employee.FirstName} {employee.LastName} - {employee.Manager.FirstName} {employee.Manager.LastName}");
                 var projects = employee.EmployeesProjects.Select(t => t.Project);
                 foreach (var project in projects)
                 {
@@ -90,6 +91,24 @@ namespace EmployeesDB
                             (project.EndDate.HasValue ? project.EndDate.Value.ToString("dd.MM.yyyy") : "Не завершён"));
                     }
                 }
+            }
+        }
+
+        private static void Task4()
+        {
+            int id = int.Parse(Console.ReadLine());
+            var employee = Context.Employees.Find(id);
+            if (employee == null)
+            {
+                Console.WriteLine("Сотрудник не найден");
+                return;
+            }
+
+            Console.WriteLine($"{employee.LastName} {employee.FirstName} {employee.MiddleName} - {employee.JobTitle}");
+            foreach (var project in Context.EmployeesProjects.Where(t=>t.EmployeeId == id).Select(t => t.Project).ToList())
+            {
+                Console.WriteLine("\t{0} - {1:dd.MM.yyyy} - {2}", project.Name, project.StartDate,
+                    (project.EndDate.HasValue ? project.EndDate.Value.ToString("dd.MM.yyyy") : "Не завершён"));
             }
         }
     }
