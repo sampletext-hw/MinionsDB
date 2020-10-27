@@ -11,7 +11,7 @@ namespace EmployeesDB
 
         static void Main(string[] args)
         {
-            Task7();
+            Task8();
         }
 
         private static string GetEmployeesInformation()
@@ -147,6 +147,16 @@ namespace EmployeesDB
             Context.SaveChanges();
             
             Context.Departments.Remove(department);
+            Context.SaveChanges();
+        }
+
+        private static void Task8()
+        {
+            string name = Console.ReadLine();
+            var town = Context.Towns.First(t => t.Name == name);
+            Context.Entry(town).Collection(t => t.Addresses).Load();
+            
+            Context.Towns.Remove(town);
             Context.SaveChanges();
         }
     }
